@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { News } from '../models/news.model';
 
@@ -10,8 +10,9 @@ import { News } from '../models/news.model';
 export class FirebaseService {
   private  Firestore = inject(Firestore)
 
-  getNews(){
+  getNewsHighlights(){
     const data = collection(this.Firestore,'news')
-    return collectionData(data) as Observable<News[]>
+    const queryData = query(data, where('component', 'array-contains', 'highlights'))
+    return collectionData(queryData) as Observable<News[]>
   }
 }
